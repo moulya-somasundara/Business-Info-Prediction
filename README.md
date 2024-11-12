@@ -16,8 +16,6 @@ The following libraries are required to run this project:
 - `time`
 
 You can install the necessary libraries using pip:
-
-```bash
 pip install beautifulsoup4 requests lxml
 
 Data Scraping
