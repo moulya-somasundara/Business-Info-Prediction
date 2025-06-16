@@ -19,6 +19,7 @@ You can install the necessary libraries using pip:
 pip install beautifulsoup4 requests lxml
 
 Modules Overview
+
 Module 1: Data Scraping
 This module is responsible for scraping the restaurant details from Yelp and saving them to a .txt file.
 
