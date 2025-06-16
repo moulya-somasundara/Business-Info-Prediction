@@ -1,67 +1,139 @@
-# Yelp Restaurant Business Info Prediction
+```markdown
+# Yelp Restaurant Business Info Prediction  
+*A lightweight pipeline for scraping, cleaning, and modelling Yelp restaurant data*
 
-## Overview
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-This project aims to scrape business information of restaurants listed on Yelp, focusing on key details such as restaurant names, URLs, and usernames. The data is scraped and saved in a text file for further analysis and prediction tasks. The project is designed to help build a dataset for predicting the performance of restaurants based on various features.
+---
 
-## Requirements
+## ✨  Why this project?
 
-The following libraries are required to run this project:
+Restaurant discovery platforms such as **Yelp** are gold-mines of operational and customer sentiment data.  
+This repository shows—end to end—how to
 
-- `beautifulsoup4`
-- `requests`
-- `lxml`
-- `re`
-- `math`
-- `time`
+1. **Collect** basic business details (name, slug, URL, etc.) for any cuisine / location on Yelp  
+2. **Clean & normalise** that raw HTML into a tidy dataset  
+3. **Prototype prediction models** that relate those attributes to downstream outcomes (e.g. engagement, ratings, revenue proxies)
 
-You can install the necessary libraries using pip:
-pip install beautifulsoup4 requests lxml
+Use it as boiler-plate for research projects, data-science portfolio pieces, or internal competitive-intelligence dashboards.
 
-Modules Overview
+---
 
-Module 1: Data Scraping
-This module is responsible for scraping the restaurant details from Yelp and saving them to a .txt file.
+## 📂  Repository layout
 
-Key Functions:
-isAd(restaurantBlock): Checks if the restaurant block is an advertisement.
-getRestaurantName(restaurantBlock): Extracts the name of the restaurant.
-getRestaurantHref(restaurantBlock): Retrieves the URL of the restaurant.
-getRestaurantUsername(restaurantUrl): Extracts the username of the restaurant from its URL.
-restaurantsListScrapper(restaurantCount, domain, cuisine, location): Main scraping function that processes multiple Yelp pages, fetches the restaurant information, and writes the data to a text file.
-Example:
-To run the scraper, call the restaurantsListScrapper function with the required parameters:
+```
 
-python
-Copy code
-restaurantCount = 10  # Number of restaurants to scrape
-domain = "https://www.yelp.com"  # Website domain
-cuisine = "Food+-+Korean"  # Type of cuisine
-location = "Manhattan%2C+NY"  # Location
+yelp-business-info-prediction/
+├── src/
+│   ├── scrape.py           ← Module 1:   HTML collection helpers
+│   ├── clean.py            ← Module 2:   Data-cleaning / preprocessing
+│   └── model.py            ← Module 3:   Quick-start ML workflows
+├── notebooks/
+│   └── exploratory.ipynb   ← Scratch pad & visualisations
+├── data/
+│   ├── raw/                ← ↳  \*.txt files straight from the scraper
+│   └── processed/          ← ↳  Parquet / CSV after cleaning
+├── requirements.txt
+├── README.md
+└── LICENSE
 
-restaurantsListScrapper(restaurantCount, domain, cuisine, location)
-This will scrape 10 restaurants offering Korean food in Manhattan and save the data to restaurantsList.txt
+````
 
-Module 2: Data Cleaning and Processing
-This module involves tasks as follows;
+---
 
-Removing duplicates
-Handling missing or incomplete data
-Normalizing restaurant names and other attributes
-It will prepare the data for predictive modeling and analysis.
+## 🚀  Quick start
 
-Module 3: Prediction Modeling
-This module involves tasks as follows;
+> **Prerequisites:** Python ≥ 3.9
 
-Analyze the data to identify key factors affecting restaurant success.
-Build prediction models using algorithms like linear regression, decision trees, or machine learning techniques.
-The goal will be to predict customer engagement, revenue, or other key performance indicators.
-Future Work
-Once the data is collected and processed, the next step is to build and evaluate predictive models. These models will analyze the restaurant data to identify patterns and predict outcomes such as business success or customer engagement.
+```bash
+# 1. Clone & install dependencies
+git clone https://github.com/<your-username>/yelp-business-info-prediction.git
+cd yelp-business-info-prediction
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+````
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+# 2. Scrape 10 Korean restaurants in Manhattan
+python -m src.scrape \
+        --count 10 \
+        --cuisine "Food+-+Korean" \
+        --location "Manhattan%2C+NY"
+# ↳ outputs data/raw/restaurantsList.txt
+```
 
+```bash
+# 3. Clean the raw file
+python -m src.clean data/raw/restaurantsList.txt
+# ↳ outputs data/processed/restaurants.parquet
+```
 
+```bash
+# 4. Train a baseline model
+python -m src.model data/processed/restaurants.parquet --target engagement
+```
 
+Check `notebooks/exploratory.ipynb` for an interactive walk-through.
 
+---
+
+## 🧩  Module overview
+
+| Module        | Purpose                                                                                             | Key functions / classes                                          |
+| ------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **scrape.py** | Fetch restaurant “cards” from Yelp search results and write them to a plain-text file.              | `is_ad`, `get_name`, `get_href`, `get_username`, `scrape_list()` |
+| **clean.py**  | Deduplicate, handle nulls, standardise names & URLs, and output a columnar dataset (CSV / Parquet). | `drop_dupes`, `normalise_strings`, `CleanPipeline`               |
+| **model.py**  | Simple scikit-learn / XGBoost wrappers for regression & classification tasks.                       | `train_test_split_plus`, `BaselineRegressor`, `FeatureSelector`  |
+
+Feel free to swap in Selenium, Playwright, or an async stack for heavier scraping workloads.
+
+---
+
+## 🛠️  Configuration
+
+`scrape_list()` accepts the following arguments:
+
+| Argument      | Example                        | Description                                                    |
+| ------------- | ------------------------------ | -------------------------------------------------------------- |
+| `count`       | `10`                           | Approximate number of restaurants to fetch                     |
+| `cuisine`     | `"Food+-+Korean"`              | Any Yelp search facet (see the URL after filtering by cuisine) |
+| `location`    | `"Manhattan%2C+NY"`            | URL-encoded location string                                    |
+| `output_path` | `data/raw/restaurantsList.txt` | Where to save results                                          |
+
+---
+
+## 📈  Roadmap / future work
+
+* [ ] Enrich with Yelp API data (ratings, review counts, price range)
+* [ ] Geocode addresses for spatial analysis
+* [ ] Deploy a **Streamlit** dashboard for live inference
+* [ ] Containerise with **Docker** & add CI tests via **GitHub Actions**
+
+Contributions are welcome—see below!
+
+---
+
+## ⚖️  Legal & ethical note
+
+Web scraping may violate website **Terms of Service**.
+**You are responsible** for ensuring that your usage complies with Yelp’s robots.txt, rate-limits, and local data-privacy laws.
+
+---
+
+## 🤝  Contributing
+
+1. Fork the repo & create your feature branch (`git checkout -b feature/foo`)
+2. Commit your changes (`git commit -m 'Add foo'`)
+3. Push to the branch (`git push origin feature/foo`)
+4. Open a Pull Request
+
+All PRs must pass `ruff` (style) and `pytest` (unit tests).
+
+---
+
+## 📝  License
+
+This project is distributed under the **MIT License**—see [`LICENSE`](LICENSE) for details.
+
+```
+```
