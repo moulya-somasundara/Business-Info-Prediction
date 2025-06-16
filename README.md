@@ -1,6 +1,6 @@
 ```markdown
 # Yelp Restaurant Business Info Prediction  
-*A lightweight pipeline for scraping, cleaning, and modelling Yelp restaurant data*
+**A lightweight pipeline for scraping, cleaning, and modelling Yelp restaurant data**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
