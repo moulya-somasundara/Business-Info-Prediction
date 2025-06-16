@@ -39,10 +39,10 @@ cuisine = "Food+-+Korean"  # Type of cuisine
 location = "Manhattan%2C+NY"  # Location
 
 restaurantsListScrapper(restaurantCount, domain, cuisine, location)
-This will scrape 10 restaurants offering Korean food in Manhattan and save the data to restaurantsList.txt.
+This will scrape 10 restaurants offering Korean food in Manhattan and save the data to restaurantsList.txt
 
 Module 2: Data Cleaning and Processing
-This module will likely involve tasks like:
+This module involves tasks as follows;
 
 Removing duplicates
 Handling missing or incomplete data
@@ -50,7 +50,7 @@ Normalizing restaurant names and other attributes
 It will prepare the data for predictive modeling and analysis.
 
 Module 3: Prediction Modeling
-In this module, you will likely:
+This module involves tasks as follows;
 
 Analyze the data to identify key factors affecting restaurant success.
 Build prediction models using algorithms like linear regression, decision trees, or machine learning techniques.
